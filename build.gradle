@@ -1,0 +1,58 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://repo-vip.tivo.com/artifactory/plugins-release"
+        }
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.0.5"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.5'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://repo-vip.tivo.com/artifactory/libs-release"
+    }
+    maven {
+        url "https://repo-vip.tivo.com/artifactory/libs-snapshot"
+    }
+    maven {
+        url "https://repo-vip.tivo.com/artifactory/spy-cache"
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation(group: 'com.tivo.tws.inception', name: 'twsInceptionParent', version: "3.0.116"){
+        exclude group: 'com.google.guava'
+        exclude group: 'io.micrometer'
+//        exclude group: 'org.springframework', module: 'spring-orm'
+//        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-web'
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
